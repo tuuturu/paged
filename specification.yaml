@@ -1,0 +1,127 @@
+openapi: 3.0.3
+
+info:
+  title: Paged
+  version: 0.0.1
+  description: Handles CRUD operations for events
+
+servers:
+  - url: https://paged.tuuturu.org
+    description: Production
+
+paths:
+  /events:
+    post:
+      tags:
+        - collection
+      operationId: addEvent
+      description: Add a new event
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        201:
+          description: Successfully created an Event
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        400:
+          description: Missing or invalid data in request body
+        401:
+          $ref: '#/components/responses/401NotAuthenticated'
+    get:
+      tags:
+        - collection
+      operationId: getEvents
+      description: Returns a list of all events
+      responses:
+        200:
+          description: A list of all events
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Event'
+        401:
+          $ref: '#/components/responses/401NotAuthenticated'
+
+  /events/:id:
+    get:
+      tags:
+        - individual
+      operationId: getEvent
+      description: Returns an event
+      responses:
+        200:
+          description: An event object
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Event'
+        401:
+          $ref: '#/components/responses/401NotAuthenticated'
+        404:
+          $ref: '#/components/responses/404NotFound'
+    patch:
+      tags:
+        - individual
+      operationId: updateEvent
+      description: Updates an Event
+      responses:
+        200:
+          description: Successfully updated event
+        401:
+          $ref: '#/components/responses/401NotAuthenticated'
+        404:
+          $ref: '#/components/responses/404NotFound'
+    delete:
+      tags:
+        - individual
+      operationId: deleteEvent
+      description: Deletes an Event
+      responses:
+        204:
+          description: Successfully deleted Event
+        401:
+          $ref: '#/components/responses/401NotAuthenticated'
+        404:
+          $ref: '#/components/responses/404NotFound'
+
+components:
+  schemas:
+    Event:
+      properties:
+        id:
+          type: string
+          readOnly: true
+        timestampStart:
+          type: string
+        timestampEnd:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        imageURL:
+          type: string
+        readMoreURL:
+          type: string
+      example:
+        id: 9f2823a6-a7a8-43f6-b21e-d933590a6779
+        timestampStart: '161220200800'
+        timestampEnd: '161220201200'
+        title: New Paged release!
+        description: Paged just released version 1.0.0.
+        imageURL: https://via.placeholder.com/150
+        readMoreURL: https://news.tuuturu.org/pagex/paged-1.0.0
+
+  responses:
+    401NotAuthenticated:
+      description: Missing or invalid authentication
+    404NotFound:
+      description: Event not found
