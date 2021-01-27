@@ -17,7 +17,7 @@ type DatabaseOptions struct {
 }
 
 type Config struct {
-	DiscoveryURL url.URL
+	DiscoveryURL *url.URL
 	Port         string
 
 	Database *DatabaseOptions

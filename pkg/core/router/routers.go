@@ -13,6 +13,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/oslokommune/go-oidc-middleware/pkg/v1/middleware"
+
 	"github.com/tuuturu/paged/pkg/core"
 	"github.com/tuuturu/paged/pkg/core/handlers"
 
@@ -41,6 +43,8 @@ func New(cfg *core.Config) *gin.Engine {
 	if err != nil {
 		panic(fmt.Sprintf("error opening storage connection: %v", err))
 	}
+
+	router.Use(middleware.NewGinAuthenticationMiddleware(*cfg.DiscoveryURL))
 
 	for _, route := range routes {
 		switch route.Method {

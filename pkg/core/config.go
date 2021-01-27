@@ -1,6 +1,22 @@
 package core
 
-import "os"
+import (
+	"errors"
+	"net/url"
+	"os"
+)
+
+func (c Config) Validate() error {
+	if c.DiscoveryURL == nil {
+		return errors.New("missing required DISCOVERY_URL environment variable")
+	}
+
+	if c.Database == nil {
+		return errors.New("missing required DATABASE_URI environment variable")
+	}
+
+	return nil
+}
 
 func LoadConfig() (cfg *Config) {
 	cfg = &Config{
@@ -14,6 +30,10 @@ func LoadConfig() (cfg *Config) {
 			Username:     os.Getenv("DATABASE_USERNAME"),
 			Password:     os.Getenv("DATABASE_PASSWORD"),
 		}
+	}
+
+	if discoveryURL, err := url.Parse(os.Getenv("DISCOVERY_URL")); err == nil {
+		cfg.DiscoveryURL = discoveryURL
 	}
 
 	return cfg
