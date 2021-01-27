@@ -99,9 +99,7 @@ components:
         id:
           type: string
           readOnly: true
-        timestampStart:
-          type: string
-        timestampEnd:
+        timestamp:
           type: string
         title:
           type: string
@@ -113,8 +111,7 @@ components:
           type: string
       example:
         id: 9f2823a6-a7a8-43f6-b21e-d933590a6779
-        timestampStart: '161220200800'
-        timestampEnd: '161220201200'
+        timestamp: '161220200800'
         title: New Paged release!
         description: Paged just released version 1.0.0.
         imageURL: https://via.placeholder.com/150

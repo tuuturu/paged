@@ -10,22 +10,20 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
-	// WARNING!
-	// Change this to a fully-qualified import path
-	// once you place this file into your project.
-	// For example,
-	//
-	//    sw "github.com/myname/myrepo/go"
-	//
-	sw "./go"
+	"github.com/tuuturu/paged/pkg/core/router"
+
+	"github.com/tuuturu/paged/pkg/core"
 )
 
 func main() {
 	log.Printf("Server started")
 
-	router := sw.NewRouter()
+	cfg := core.LoadConfig()
 
-	log.Fatal(router.Run(":8080"))
+	r := router.New(cfg)
+
+	log.Fatal(r.Run(fmt.Sprintf(":%s", cfg.Port)))
 }
