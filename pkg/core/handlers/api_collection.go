@@ -12,21 +12,50 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/tuuturu/paged/pkg/core/models"
+
 	"github.com/tuuturu/paged/pkg/core"
+
+	"github.com/google/uuid"
 
 	"github.com/gin-gonic/gin"
 )
 
 // AddEvent -
-func AddEvent(_ core.StorageClient) gin.HandlerFunc {
+func AddEvent(storage core.StorageClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{})
+		event := models.Event{}
+
+		err := c.Bind(&event)
+		if err != nil {
+			c.AbortWithStatus(http.StatusBadRequest)
+
+			return
+		}
+
+		event.Id = uuid.New().String()
+
+		err = storage.AddEvent(&event)
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+
+			return
+		}
+
+		c.JSON(http.StatusCreated, event)
 	}
 }
 
 // GetEvents -
-func GetEvents(_ core.StorageClient) gin.HandlerFunc {
+func GetEvents(storage core.StorageClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{})
+		events, err := storage.GetEvents()
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+
+			return
+		}
+
+		c.JSON(http.StatusOK, events)
 	}
 }

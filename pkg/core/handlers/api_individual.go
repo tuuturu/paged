@@ -12,28 +12,67 @@ package handlers
 import (
 	"net/http"
 
+	"github.com/tuuturu/paged/pkg/core/models"
+
 	"github.com/tuuturu/paged/pkg/core"
 
 	"github.com/gin-gonic/gin"
 )
 
 // DeleteEvent -
-func DeleteEvent(_ core.StorageClient) gin.HandlerFunc {
+func DeleteEvent(storage core.StorageClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{})
+		id := c.Param("id")
+
+		err := storage.DeleteEvent(id)
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+
+			return
+		}
+
+		c.Status(http.StatusNoContent)
 	}
 }
 
 // GetEvent -
-func GetEvent(_ core.StorageClient) gin.HandlerFunc {
+func GetEvent(storage core.StorageClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{})
+		id := c.Param("id")
+
+		result, err := storage.GetEvent(id)
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+
+			return
+		}
+
+		c.JSON(http.StatusOK, result)
 	}
 }
 
 // UpdateEvent -
-func UpdateEvent(_ core.StorageClient) gin.HandlerFunc {
+func UpdateEvent(storage core.StorageClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{})
+		id := c.Param("id")
+		update := models.Event{}
+
+		err := c.Bind(&update)
+		if err != nil {
+			c.AbortWithStatus(http.StatusBadRequest)
+
+			return
+		}
+
+		update.Id = id
+
+		result, err := storage.UpdateEvent(&update)
+		if err != nil {
+			c.AbortWithStatus(http.StatusInternalServerError)
+
+			return
+		}
+
+		c.JSON(http.StatusOK, result)
 	}
 }
