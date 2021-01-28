@@ -56,3 +56,15 @@ func eventAsJSONBytes(event models.Event) []byte {
 
 	return result
 }
+
+func createEvent(t *testing.T, env *servicetesting.Environment, event models.Event) string {
+	result, err := env.DoRequest("/events", http.MethodPost, eventAsJSONBytes(event))
+	assert.NilError(t, err)
+
+	createdEvent := models.Event{}
+
+	err = json.Unmarshal(result.Body.Bytes(), &createdEvent)
+	assert.NilError(t, err)
+
+	return createdEvent.Id
+}
