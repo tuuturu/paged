@@ -71,7 +71,18 @@ func (c *upperClient) UpdateEvent(update *models.Event) (updateResult *models.Ev
 
 	condition := db.Cond{"id": update.Id}
 
-	err = collection.Find(condition).One(&originalEvent)
+	result := collection.Find(condition)
+
+	exists, err := result.Exists()
+	if err != nil {
+		return nil, fmt.Errorf("error fetching event: %w", err)
+	}
+
+	if !exists {
+		return nil, core.StorageErrorNotFound
+	}
+
+	err = result.One(&originalEvent)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching original event: %w", err)
 	}
