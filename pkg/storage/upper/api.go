@@ -80,12 +80,23 @@ func (c *upperClient) UpdateEvent(update *models.Event) (updateResult *models.Ev
 	return &originalEvent, nil
 }
 
-func (c *upperClient) DeleteEvent(id string) error {
+func (c *upperClient) DeleteEvent(id string) (err error) {
 	collection := c.Session.Collection(eventTable)
 
 	condition := db.Cond{"id": id}
 
-	err := collection.Find(condition).Delete()
+	result := collection.Find(condition)
+
+	exists, err := result.Exists()
+	if err != nil {
+		return fmt.Errorf("error fetching event: %w", err)
+	}
+
+	if !exists {
+		return core.StorageErrorNotFound
+	}
+
+	err = result.Delete()
 	if err != nil {
 		return fmt.Errorf("error deleting story with ID %s: %w", id, err)
 	}

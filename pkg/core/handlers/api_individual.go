@@ -10,6 +10,7 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/tuuturu/paged/pkg/core/models"
@@ -26,7 +27,12 @@ func DeleteEvent(storage core.StorageClient) gin.HandlerFunc {
 
 		err := storage.DeleteEvent(id)
 		if err != nil {
-			c.AbortWithStatus(http.StatusInternalServerError)
+			switch {
+			case errors.Is(core.StorageErrorNotFound, err):
+				c.AbortWithStatus(http.StatusNotFound)
+			default:
+				c.AbortWithStatus(http.StatusInternalServerError)
+			}
 
 			return
 		}
