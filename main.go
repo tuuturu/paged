@@ -23,6 +23,11 @@ func main() {
 
 	cfg := core.LoadConfig()
 
+	err := cfg.Validate()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	r := router.New(cfg)
 
 	log.Fatal(r.Run(fmt.Sprintf(":%s", cfg.Port)))

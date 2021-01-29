@@ -15,12 +15,20 @@ func (c Config) Validate() error {
 		return errors.New("missing required DATABASE_URI environment variable")
 	}
 
+	if c.Port == "" {
+		return errors.New("missing required PORT environment variable")
+	}
+
 	return nil
 }
 
 func LoadConfig() (cfg *Config) {
 	cfg = &Config{
 		Port: "3000",
+	}
+
+	if port := os.Getenv("PAGED_LISTENING_PORT"); port != "" {
+		cfg.Port = port
 	}
 
 	if databaseURI := os.Getenv("DATABASE_URI"); databaseURI != "" {
