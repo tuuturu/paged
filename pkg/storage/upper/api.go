@@ -21,19 +21,28 @@ func (c *upperClient) AddEvent(event *models.Event) error {
 	return nil
 }
 
-func (c *upperClient) GetEvent(id string) (result *models.Event, err error) {
+func (c *upperClient) GetEvent(id string) (requestedEvent *models.Event, err error) {
 	collection := c.Session.Collection(eventTable)
 
 	condition := db.Cond{"id": id}
 
-	result = &models.Event{}
+	results := collection.Find(condition)
 
-	err = collection.Find(condition).One(result)
+	exists, err := results.Exists()
+	if err != nil {
+		return nil, fmt.Errorf("error fetching event: %w", err)
+	}
+
+	if !exists {
+		return nil, core.StorageErrorNotFound
+	}
+
+	err = collection.Find(condition).One(requestedEvent)
 	if err != nil {
 		return nil, fmt.Errorf("error finding event: %w", err)
 	}
 
-	return result, nil
+	return requestedEvent, nil
 }
 
 func (c *upperClient) GetEvents() (result []*models.Event, err error) {

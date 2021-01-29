@@ -48,7 +48,12 @@ func GetEvent(storage core.StorageClient) gin.HandlerFunc {
 
 		result, err := storage.GetEvent(id)
 		if err != nil {
-			c.AbortWithStatus(http.StatusInternalServerError)
+			switch {
+			case errors.Is(core.StorageErrorNotFound, err):
+				c.AbortWithStatus(http.StatusNotFound)
+			default:
+				c.AbortWithStatus(http.StatusInternalServerError)
+			}
 
 			return
 		}
