@@ -37,7 +37,7 @@ func (c *upperClient) GetEvent(id string) (requestedEvent *models.Event, err err
 		return nil, core.StorageErrorNotFound
 	}
 
-	err = collection.Find(condition).One(requestedEvent)
+	err = results.One(&requestedEvent)
 	if err != nil {
 		return nil, fmt.Errorf("error finding event: %w", err)
 	}
