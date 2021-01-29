@@ -1,7 +1,6 @@
 package tests
 
 import (
-	"encoding/json"
 	"net/http"
 	"testing"
 
@@ -54,11 +53,7 @@ func TestCreateEvent(t *testing.T) {
 
 			assert.Equal(t, tc.expectStatus, result.Code)
 
-			resultEvent := models.Event{}
-
-			err = json.Unmarshal(result.Body.Bytes(), &resultEvent)
-			assert.NilError(t, err)
-
+			resultEvent := eventFromJSonBytes(result.Body.Bytes())
 			assert.Assert(t, resultEvent.Id != "")
 
 			resultEvent.Id = ""
