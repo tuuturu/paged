@@ -1,15 +1,19 @@
-FROM golang:1.10 AS build
+FROM golang:1.15 AS build
 WORKDIR /go/src
-COPY go ./go
+
+COPY pkg ./pkg
+COPY go.mod .
+COPY go.sum .
+COPY specification.yaml .
 COPY main.go .
 
 ENV CGO_ENABLED=0
 RUN go get -d -v ./...
 
-RUN go build -a -installsuffix cgo -o openapi .
+RUN go build -a -installsuffix cgo -o paged .
 
 FROM scratch AS runtime
 ENV GIN_MODE=release
-COPY --from=build /go/src/openapi ./
-EXPOSE 8080/tcp
-ENTRYPOINT ["./openapi"]
+COPY --from=build /go/src/paged ./
+EXPOSE 3000/tcp
+ENTRYPOINT ["./paged"]
