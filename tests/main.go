@@ -33,6 +33,7 @@ func CreateTestEnvironment() (*servicetesting.Environment, error) {
 
 	cfg := &core.Config{
 		DiscoveryURL: discoveryURL,
+		Port:         "3000",
 		Database: &core.DatabaseOptions{
 			URI:          env.GetDatabaseBackendURI(),
 			Username:     "postgres",
@@ -43,6 +44,8 @@ func CreateTestEnvironment() (*servicetesting.Environment, error) {
 
 	err = cfg.Validate()
 	if err != nil {
+		_ = env.Teardown()
+
 		return nil, fmt.Errorf("error validating config: %w", err)
 	}
 
