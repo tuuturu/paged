@@ -20,7 +20,7 @@ func TestUpdateEvent(t *testing.T) {
 		expectCode   int
 	}{
 		{
-			name: "Should work",
+			name: "Should correctly update an existing event",
 
 			withEvent: models.Event{
 				Timestamp:   "123456789",
@@ -69,6 +69,46 @@ func TestUpdateEvent(t *testing.T) {
 
 			tc.expectResult.Id = id
 			assert.Equal(t, tc.expectResult, eventFromJSonBytes(getResult.Body.Bytes()))
+		})
+	}
+}
+
+func TestUpdateMissingEvent(t *testing.T) {
+	testCases := []struct {
+		name string
+
+		withID     string
+		withUpdate models.Event
+
+		expectCode int
+	}{
+		{
+			name: "Should return 404 on PATCH missing event",
+
+			withID: "this-id-is-bonkers",
+			withUpdate: models.Event{
+				Title: "This try should fail!",
+			},
+
+			expectCode: http.StatusNotFound,
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+
+		t.Run(tc.name, func(t *testing.T) {
+			env, err := CreateTestEnvironment()
+			assert.NilError(t, err)
+
+			defer func() {
+				_ = env.Teardown()
+			}()
+
+			result, err := env.DoRequest(fmt.Sprintf("/events/%s", tc.withID), http.MethodPatch, eventAsJSONBytes(tc.withUpdate))
+			assert.NilError(t, err)
+
+			assert.Equal(t, tc.expectCode, result.Code)
 		})
 	}
 }
