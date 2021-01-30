@@ -17,3 +17,5 @@ ENV GIN_MODE=release
 COPY --from=build /go/src/paged ./
 EXPOSE 3000/tcp
 ENTRYPOINT ["./paged"]
+
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
