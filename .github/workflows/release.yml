@@ -62,7 +62,7 @@ jobs:
           RELEASE_BRANCHES: main
 
       - name: Build and push Docker images
-        run: docker build --tag docker.pkg.github.com/tuuturu/paged/pager-service:$(git describe --tags `git rev-list --tags --max-count=1`) .
+        run: docker build --tag docker.pkg.github.com/tuuturu/pager-event-service/pager-event-service:$(git describe --tags `git rev-list --tags --max-count=1`) .
 
       - name: Push docker image
-        run: docker push docker.pkg.github.com/tuuturu/paged/pager-service:$(git describe --tags `git rev-list --tags --max-count=1`)
+        run: docker push docker.pkg.github.com/tuuturu/pager-event-service/pager-event-service:$(git describe --tags `git rev-list --tags --max-count=1`)
