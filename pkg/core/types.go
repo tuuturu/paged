@@ -23,7 +23,9 @@ type Config struct {
 	Database *DatabaseOptions
 }
 
+// StorageClient defines the interface a storage client should expose
 type StorageClient interface {
+	// Open initiates the connection to the storage backend
 	Open() error
 	Close() error
 
