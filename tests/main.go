@@ -77,3 +77,15 @@ func createEvent(t *testing.T, env *servicetesting.Environment, event models.Eve
 
 	return createdEvent.Id
 }
+
+func createEvents(t *testing.T, env *servicetesting.Environment, events []models.Event) []string {
+	ids := make([]string, len(events))
+
+	for _, event := range events {
+		id := createEvent(t, env, event)
+
+		ids = append(ids, id)
+	}
+
+	return ids
+}

@@ -55,10 +55,11 @@ func (c *upperClient) GetEvents() (result []*models.Event, err error) {
 		return nil, fmt.Errorf("error fetching all events: %w", err)
 	}
 
-	for _, event := range events {
+	result = make([]*models.Event, len(events))
+	for index, event := range events {
 		event := event
 
-		result = append(result, &event)
+		result[index] = &event
 	}
 
 	return result, nil

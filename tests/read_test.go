@@ -1,6 +1,8 @@
 package tests
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"testing"
@@ -89,6 +91,52 @@ func TestGetMissingEvent(t *testing.T) {
 			assert.NilError(t, err)
 
 			assert.Equal(t, tc.expectCode, result.Code)
+		})
+	}
+}
+
+func TestGetAllEvents(t *testing.T) {
+	testCases := []struct {
+		name string
+
+		with []models.Event
+	}{
+		{
+			name: "Should return a single event in a list when given one event",
+
+			with: []models.Event{
+				{
+					Title:       "Awesome event",
+					Description: "Very descriptive description",
+				},
+			},
+		},
+		{
+			name: "Should return an empty list when given zero events",
+
+			with: []models.Event{},
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+
+		t.Run(tc.name, func(t *testing.T) {
+			env, err := CreateTestEnvironment()
+			assert.NilError(t, err)
+
+			createEvents(t, env, tc.with)
+
+			response, err := env.DoRequest("/events", http.MethodGet, nil)
+			assert.NilError(t, err)
+
+			events := make([]models.Event, 0)
+
+			err = json.Unmarshal(response.Body.Bytes(), &events)
+			assert.NilError(t, err)
+			assert.Assert(t, !bytes.Equal(response.Body.Bytes(), []byte("null")))
+
+			assert.Equal(t, len(tc.with), len(events))
 		})
 	}
 }
