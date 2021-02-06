@@ -2,8 +2,9 @@ package core
 
 import (
 	"errors"
-	log "github.com/sirupsen/logrus"
 	"net/url"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/tuuturu/paged/pkg/core/models"
 
