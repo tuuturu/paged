@@ -125,6 +125,10 @@ func TestGetAllEvents(t *testing.T) {
 			env, err := CreateTestEnvironment()
 			assert.NilError(t, err)
 
+			defer func() {
+				_ = env.Teardown()
+			}()
+
 			createEvents(t, env, tc.with)
 
 			response, err := env.DoRequest("/events", http.MethodGet, nil)
@@ -139,4 +143,18 @@ func TestGetAllEvents(t *testing.T) {
 			assert.Equal(t, len(tc.with), len(events))
 		})
 	}
+}
+
+func TestEmptyEvents(t *testing.T) {
+	env, err := CreateTestEnvironment()
+	assert.NilError(t, err)
+
+	defer func() {
+		_ = env.Teardown()
+	}()
+
+	response, err := env.DoRequest("/events", http.MethodGet, nil)
+	assert.NilError(t, err)
+
+	assert.Assert(t, bytes.Equal([]byte("[]"), response.Body.Bytes()))
 }
