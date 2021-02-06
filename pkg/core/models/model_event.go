@@ -12,7 +12,7 @@ package models
 type Event struct {
 	Id string `json:"id,omitempty" db:"id"`
 
-	Timestamp string `json:"timestampStart,omitempty" db:"timestamp"`
+	Timestamp string `json:"timestamp,omitempty" db:"timestamp"`
 
 	Title string `json:"title,omitempty" db:"title"`
 
