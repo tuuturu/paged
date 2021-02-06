@@ -2,6 +2,7 @@ package core
 
 import (
 	"errors"
+	log "github.com/sirupsen/logrus"
 	"net/url"
 
 	"github.com/tuuturu/paged/pkg/core/models"
@@ -23,6 +24,8 @@ type Config struct {
 	Port         string
 
 	Database *DSN
+
+	LogLevel log.Level
 }
 
 // StorageClient defines the interface a storage client should expose

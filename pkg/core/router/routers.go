@@ -12,6 +12,7 @@ package router
 import (
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/oslokommune/go-oidc-middleware/pkg/v1/middleware"
 

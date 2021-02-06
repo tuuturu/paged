@@ -4,6 +4,8 @@ import (
 	"errors"
 	"net/url"
 	"os"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func (c Config) Validate() error {
@@ -24,11 +26,15 @@ func (c Config) Validate() error {
 
 func LoadConfig() (cfg *Config) {
 	cfg = &Config{
-		Port: "3000",
+		Port: getEnv("PORT", "3000"),
 	}
 
-	if port := os.Getenv("PAGED_LISTENING_PORT"); port != "" {
-		cfg.Port = port
+	logLevel := getEnv("LOG_LEVEL", "error")
+	switch logLevel {
+	case "error":
+		cfg.LogLevel = log.ErrorLevel
+	default:
+		cfg.LogLevel = log.InfoLevel
 	}
 
 	if dsn := os.Getenv("DSN"); dsn != "" {
@@ -40,4 +46,14 @@ func LoadConfig() (cfg *Config) {
 	}
 
 	return cfg
+}
+
+func getEnv(key, fallback string) string {
+	result := os.Getenv(key)
+
+	if result == "" {
+		return fallback
+	}
+
+	return result
 }
