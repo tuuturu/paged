@@ -11,6 +11,8 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/tuuturu/paged/pkg/core/models"
 
@@ -34,6 +36,12 @@ func AddEvent(storage core.StorageClient) gin.HandlerFunc {
 		}
 
 		event.Id = uuid.New().String()
+
+		if event.Timestamp == "" {
+			nowMillis := strconv.FormatInt(time.Now().UnixNano(), 10)
+
+			event.Timestamp = nowMillis
+		}
 
 		err = storage.AddEvent(&event)
 		if err != nil {
