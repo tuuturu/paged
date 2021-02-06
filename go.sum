@@ -90,8 +90,8 @@ github.com/ory/dockertest v3.3.5+incompatible h1:iLLK6SQwIhcbrG783Dghaaa3WPzGc+4
 github.com/ory/dockertest v3.3.5+incompatible/go.mod h1:1vX4m9wsvi00u5bseYwXaSnhNrne+V0E6LAcBILJdPs=
 github.com/oslokommune/go-gin-tools v0.0.3 h1:jU2c+Rq1USi6Yfs3QlI4kZYV18mAjAGkBBNvgIWl+Ag=
 github.com/oslokommune/go-gin-tools v0.0.3/go.mod h1:DL+0an51txyU5anSPUCMKP6sDt/PEKZkJR8wiv8T+OU=
-github.com/oslokommune/go-oidc-middleware v0.0.3 h1:/kO/DxxAML76N0X1jSaPQo3girbP+wn6ryRCzey1fRs=
-github.com/oslokommune/go-oidc-middleware v0.0.3/go.mod h1:01n1g2J1Tf8US6kLlP8IesZepQueIxGpN4icCkvE5/E=
+github.com/oslokommune/go-oidc-middleware v0.0.4 h1:E0U2H9GpkufpdvBS4mVAmOiJkf2P3ykGaJB/aTpGVW0=
+github.com/oslokommune/go-oidc-middleware v0.0.4/go.mod h1:qkuzGns266QZZ2wcjUEqCj0JDLdHdpIVEzMQKYyqZmo=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=

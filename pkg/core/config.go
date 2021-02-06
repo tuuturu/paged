@@ -45,6 +45,11 @@ func LoadConfig() (cfg *Config) {
 		cfg.DiscoveryURL = discoveryURL
 	}
 
+	if clientID := os.Getenv("CLIENT_ID"); clientID != "" {
+		cfg.ClientID = clientID
+		cfg.ClientSecret = os.Getenv("CLIENT_SECRET")
+	}
+
 	return cfg
 }
 

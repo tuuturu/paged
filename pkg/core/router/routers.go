@@ -47,7 +47,22 @@ func New(cfg *core.Config) *gin.Engine {
 		panic(fmt.Sprintf("error opening storage connection: %v", err))
 	}
 
-	router.Use(middleware.NewGinAuthenticationMiddleware(*cfg.DiscoveryURL))
+	switch {
+	case cfg.ClientID != "" && cfg.ClientSecret != "":
+		router.Use(middleware.NewGinIntrospectionValidationMiddleware(&middleware.NewGinIntrospectionValidationMiddlewareOptions{
+			Out:          os.Stdout,
+			LogLevel:     cfg.LogLevel,
+			DiscoveryURL: cfg.DiscoveryURL,
+			ClientID:     cfg.ClientID,
+			ClientSecret: cfg.ClientSecret,
+		}))
+	default:
+		router.Use(middleware.NewGinAuthenticationMiddleware(middleware.NewJWTValidationMiddlewareOptions{
+			Out:          os.Stdout,
+			LogLevel:     cfg.LogLevel,
+			DiscoveryURL: cfg.DiscoveryURL,
+		}))
+	}
 
 	for _, route := range routes {
 		switch route.Method {

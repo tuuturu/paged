@@ -26,6 +26,9 @@ type Config struct {
 	Database *DSN
 
 	LogLevel log.Level
+
+	ClientID     string
+	ClientSecret string
 }
 
 // StorageClient defines the interface a storage client should expose
