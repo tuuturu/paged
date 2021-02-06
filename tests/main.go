@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strings"
 	"testing"
 
 	"github.com/tuuturu/paged/pkg/core"
@@ -31,14 +32,20 @@ func CreateTestEnvironment() (*servicetesting.Environment, error) {
 		return nil, fmt.Errorf("error creating test environment: %w", err)
 	}
 
+	parts := strings.Split(env.GetDatabaseBackendURI(), ":")
+	dbURI := parts[0]
+	dbPort := parts[1]
+
 	cfg := &core.Config{
 		DiscoveryURL: discoveryURL,
 		Port:         "3000",
-		Database: &core.DatabaseOptions{
-			URI:          env.GetDatabaseBackendURI(),
+		Database: &core.DSN{
+			Scheme:       "postgres",
+			URI:          dbURI,
+			Port:         dbPort,
+			DatabaseName: "postgres",
 			Username:     "postgres",
 			Password:     dbPassword,
-			DatabaseName: "postgres",
 		},
 	}
 

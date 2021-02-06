@@ -12,7 +12,7 @@ func (c Config) Validate() error {
 	}
 
 	if c.Database == nil {
-		return errors.New("missing required DATABASE_URI environment variable")
+		return errors.New("missing required DSN environment variable")
 	}
 
 	if c.Port == "" {
@@ -31,13 +31,8 @@ func LoadConfig() (cfg *Config) {
 		cfg.Port = port
 	}
 
-	if databaseURI := os.Getenv("DATABASE_URI"); databaseURI != "" {
-		cfg.Database = &DatabaseOptions{
-			URI:          databaseURI,
-			DatabaseName: os.Getenv("DATABASE_NAME"),
-			Username:     os.Getenv("DATABASE_USERNAME"),
-			Password:     os.Getenv("DATABASE_PASSWORD"),
-		}
+	if dsn := os.Getenv("DSN"); dsn != "" {
+		cfg.Database = parseDSN(dsn)
 	}
 
 	if discoveryURL, err := url.Parse(os.Getenv("DISCOVERY_URL")); err == nil {

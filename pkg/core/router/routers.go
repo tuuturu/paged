@@ -29,14 +29,16 @@ func New(cfg *core.Config) *gin.Engine {
 
 	var storage core.StorageClient
 
-	switch {
-	default:
+	switch cfg.Database.Scheme {
+	case "postgres":
 		storage = upper.NewUpperClient(
-			cfg.Database.URI,
+			fmt.Sprintf("%s:%s", cfg.Database.URI, cfg.Database.Port),
 			cfg.Database.DatabaseName,
 			cfg.Database.Username,
 			cfg.Database.Password,
 		)
+	default:
+		panic(fmt.Sprintf("Unsupported database %s", cfg.Database.Scheme))
 	}
 
 	err := storage.Open()

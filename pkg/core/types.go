@@ -9,8 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type DatabaseOptions struct {
+type DSN struct {
+	Scheme       string
 	URI          string
+	Port         string
 	DatabaseName string
 	Username     string
 	Password     string
@@ -20,7 +22,7 @@ type Config struct {
 	DiscoveryURL *url.URL
 	Port         string
 
-	Database *DatabaseOptions
+	Database *DSN
 }
 
 // StorageClient defines the interface a storage client should expose
