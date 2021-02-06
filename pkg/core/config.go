@@ -33,6 +33,8 @@ func LoadConfig() (cfg *Config) {
 	switch logLevel {
 	case "error":
 		cfg.LogLevel = log.ErrorLevel
+	case "debug":
+		cfg.LogLevel = log.DebugLevel
 	default:
 		cfg.LogLevel = log.InfoLevel
 	}
