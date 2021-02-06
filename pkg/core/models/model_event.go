@@ -14,6 +14,8 @@ type Event struct {
 
 	Timestamp string `json:"timestamp,omitempty" db:"timestamp"`
 
+	Read bool `json:"read,omitempty" db:"read"`
+
 	Title string `json:"title,omitempty" db:"title"`
 
 	Description string `json:"description,omitempty" db:"description"`

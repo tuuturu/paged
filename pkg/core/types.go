@@ -32,6 +32,10 @@ type Config struct {
 	ClientSecret string
 }
 
+type GetEventsFilter struct {
+	Read *bool
+}
+
 // StorageClient defines the interface a storage client should expose
 type StorageClient interface {
 	// Open initiates the connection to the storage backend
@@ -40,7 +44,7 @@ type StorageClient interface {
 
 	AddEvent(event *models.Event) error
 	GetEvent(id string) (*models.Event, error)
-	GetEvents() ([]*models.Event, error)
+	GetEvents(filter GetEventsFilter) ([]*models.Event, error)
 	UpdateEvent(event *models.Event) (*models.Event, error)
 	DeleteEvent(id string) error
 }

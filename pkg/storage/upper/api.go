@@ -45,12 +45,18 @@ func (c *upperClient) GetEvent(id string) (requestedEvent *models.Event, err err
 	return requestedEvent, nil
 }
 
-func (c *upperClient) GetEvents() (result []*models.Event, err error) {
+func (c *upperClient) GetEvents(filter core.GetEventsFilter) (result []*models.Event, err error) {
+	condition := db.Cond{}
+
+	if filter.Read != nil {
+		condition["read"] = *filter.Read
+	}
+
 	collection := c.Session.Collection(eventTable)
 
 	var events []models.Event
 
-	err = collection.Find().All(&events)
+	err = collection.Find(condition).All(&events)
 	if err != nil {
 		return nil, fmt.Errorf("error fetching all events: %w", err)
 	}
@@ -146,6 +152,7 @@ func (c *upperClient) setup() error {
 	_, err := sql.Exec(fmt.Sprintf(`CREATE TABLE IF NOT EXISTS %s (
 		id text primary key,
 		timestamp text not null,
+		read bool not null,
 		title text not null,
 		description text not null,
 		imageurl text,

@@ -57,7 +57,20 @@ func AddEvent(storage core.StorageClient) gin.HandlerFunc {
 // GetEvents -
 func GetEvents(storage core.StorageClient) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		events, err := storage.GetEvents()
+		filter := core.GetEventsFilter{}
+
+		if rawRead := c.Query("read"); rawRead != "" {
+			read, err := strconv.ParseBool(rawRead)
+			if err != nil {
+				c.AbortWithStatus(http.StatusBadRequest)
+
+				return
+			}
+
+			filter.Read = &read
+		}
+
+		events, err := storage.GetEvents(filter)
 		if err != nil {
 			c.AbortWithStatus(http.StatusInternalServerError)
 
