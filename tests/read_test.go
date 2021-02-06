@@ -43,6 +43,10 @@ func TestGetEvent(t *testing.T) {
 			env, err := CreateTestEnvironment()
 			assert.NilError(t, err)
 
+			defer func() {
+				_ = env.Teardown()
+			}()
+
 			id := createEvent(t, env, tc.withEvent)
 
 			result, err := env.DoRequest(fmt.Sprintf("/events/%s", id), http.MethodGet, nil)
@@ -157,4 +161,82 @@ func TestEmptyEvents(t *testing.T) {
 	assert.NilError(t, err)
 
 	assert.Assert(t, bytes.Equal([]byte("[]"), response.Body.Bytes()))
+}
+
+func TestFilter(t *testing.T) {
+	testCases := []struct {
+		name string
+
+		withFilter string
+		withEvents []models.Event
+
+		expectResults int
+	}{
+		{
+			name: "Should exclude nothing without a filter",
+
+			withFilter: "",
+			withEvents: []models.Event{
+				{
+					Title:       "First event",
+					Description: "some descript",
+				},
+				{
+					Title:       "Second event",
+					Description: "other descript",
+				},
+			},
+
+			expectResults: 2,
+		},
+		{
+			name: "Should exclude unread events",
+
+			withFilter: "read=true",
+			withEvents: []models.Event{
+				{
+					Title:       "This is read",
+					Description: "Already read the description",
+					Read:        true,
+				},
+				{
+					Title:       "This is unread",
+					Description: "Havent yet read the description",
+					Read:        false,
+				},
+			},
+
+			expectResults: 1,
+		},
+	}
+
+	for _, tc := range testCases {
+		tc := tc
+
+		t.Run(tc.name, func(t *testing.T) {
+			env, err := CreateTestEnvironment()
+			assert.NilError(t, err)
+
+			defer func() {
+				_ = env.Teardown()
+			}()
+
+			createEvents(t, env, tc.withEvents)
+
+			filter := ""
+			if tc.withFilter != "" {
+				filter = fmt.Sprintf("?%s", tc.withFilter)
+			}
+
+			response, err := env.DoRequest(fmt.Sprintf("/events%s", filter), http.MethodGet, nil)
+			assert.NilError(t, err)
+
+			var resultEvents []models.Event
+
+			err = json.Unmarshal(response.Body.Bytes(), &resultEvents)
+			assert.NilError(t, err)
+
+			assert.Equal(t, tc.expectResults, len(resultEvents))
+		})
+	}
 }
