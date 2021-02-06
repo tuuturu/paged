@@ -24,8 +24,10 @@ func TestValidateConfig(t *testing.T) {
 					Host:   "example.com",
 				},
 				Port: "5555",
-				Database: &DatabaseOptions{
-					URI:          "notadb:8833",
+				Database: &DSN{
+					Scheme:       "postgres",
+					URI:          "notadb",
+					Port:         "8833",
 					DatabaseName: "postgres",
 					Username:     "postgres",
 					Password:     "postgres",
@@ -68,8 +70,10 @@ func TestValidateConfig(t *testing.T) {
 					Host:   "example.com",
 				},
 				Port: "",
-				Database: &DatabaseOptions{
-					URI:          "testuri:5432",
+				Database: &DSN{
+					Scheme:       "postgres",
+					URI:          "testuri",
+					Port:         "5432",
 					DatabaseName: "postgres",
 					Username:     "postgres",
 					Password:     "postgres",
