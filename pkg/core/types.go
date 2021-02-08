@@ -6,7 +6,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/tuuturu/paged/pkg/core/models"
+	"github.com/tuuturu/pager-event-service/pkg/core/models"
 
 	"github.com/gin-gonic/gin"
 )

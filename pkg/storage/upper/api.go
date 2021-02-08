@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/imdario/mergo"
-	"github.com/tuuturu/paged/pkg/core"
-	"github.com/tuuturu/paged/pkg/core/models"
+	"github.com/tuuturu/pager-event-service/pkg/core"
+	"github.com/tuuturu/pager-event-service/pkg/core/models"
 	"github.com/upper/db/v4"
 	"github.com/upper/db/v4/adapter/postgresql"
 )

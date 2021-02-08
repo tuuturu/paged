@@ -1,4 +1,4 @@
-![Build](https://github.com/tuuturu/paged/workflows/Release/badge.svg)
+![Build](https://github.com/tuuturu/pager-event-service/workflows/Release/badge.svg)
 
 # paged
 Event backend

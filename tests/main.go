@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/tuuturu/paged/pkg/core"
-	"github.com/tuuturu/paged/pkg/core/models"
-	"github.com/tuuturu/paged/pkg/core/router"
+	"github.com/tuuturu/pager-event-service/pkg/core"
+	"github.com/tuuturu/pager-event-service/pkg/core/models"
+	"github.com/tuuturu/pager-event-service/pkg/core/router"
 	"gotest.tools/assert"
 
 	"github.com/oslokommune/go-gin-tools/pkg/v1/servicetesting"

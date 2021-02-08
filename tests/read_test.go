@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/tuuturu/paged/pkg/core/models"
+	"github.com/tuuturu/pager-event-service/pkg/core/models"
 	"gotest.tools/assert"
 )
 

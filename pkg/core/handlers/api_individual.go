@@ -13,9 +13,9 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/tuuturu/paged/pkg/core/models"
+	"github.com/tuuturu/pager-event-service/pkg/core/models"
 
-	"github.com/tuuturu/paged/pkg/core"
+	"github.com/tuuturu/pager-event-service/pkg/core"
 
 	"github.com/gin-gonic/gin"
 )

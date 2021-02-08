@@ -16,10 +16,10 @@ import (
 
 	"github.com/oslokommune/go-oidc-middleware/pkg/v1/middleware"
 
-	"github.com/tuuturu/paged/pkg/core"
-	"github.com/tuuturu/paged/pkg/core/handlers"
+	"github.com/tuuturu/pager-event-service/pkg/core"
+	"github.com/tuuturu/pager-event-service/pkg/core/handlers"
 
-	"github.com/tuuturu/paged/pkg/storage/upper"
+	"github.com/tuuturu/pager-event-service/pkg/storage/upper"
 
 	"github.com/gin-gonic/gin"
 )

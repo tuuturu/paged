@@ -13,9 +13,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/tuuturu/paged/pkg/core/router"
+	"github.com/tuuturu/pager-event-service/pkg/core/router"
 
-	"github.com/tuuturu/paged/pkg/core"
+	"github.com/tuuturu/pager-event-service/pkg/core"
 )
 
 func main() {

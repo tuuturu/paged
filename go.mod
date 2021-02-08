@@ -1,4 +1,4 @@
-module github.com/tuuturu/paged
+module github.com/tuuturu/pager-event-service
 
 go 1.15
 
