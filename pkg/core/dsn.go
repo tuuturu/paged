@@ -5,7 +5,7 @@ import (
 	"regexp"
 )
 
-var dsnRegex = regexp.MustCompile(`(\w+)://(\w+):(.+)@(\w+-):(\d+)/(\w+)`)
+var dsnRegex = regexp.MustCompile(`(\w+)://(\w+):(.+)@([\w-]+):(\d+)/(\w+)`)
 
 func parseDSN(rawDSN string) *DSN {
 	matches := dsnRegex.FindStringSubmatch(rawDSN)
